@@ -1,21 +1,25 @@
 def lengthOfLongestSubstring(s: str) -> int:
-    letters = {}
-    count = 0
+    """Given a string, find the length of the longest substring without repeating characters
+
+    Solution:
+        We use a window approach here so we can optimize and iterate just once through the list. When we find a repeat
+        character, we keep the part of the substring that still remains unique, and just add the new letter and continue
+        on. This way, we don't have to brute force from each position in the string.
+
+    Args:
+        s (str): the string to check
+
+    Returns:
+        int: the length of the longest substring in the string
+    """
+    letters = []
     longest = 0
-    for i in range(len(s)):
-        for j in range(i, len(s)):
-            # If we hit a character that repeats
-            if s[j] in letters:
-                if longest < count:
-                    longest = count
-                count = 0
-                letters.clear()
-                break
-            else:
-                count += 1
-                letters[s[j]] = 1
-    if longest < count:
-        longest = count
+    for st in s:
+        if st in letters:
+            # Keep the substring from the last time we see the repeat letter
+            letters = letters[letters.index(st)+1:]
+        letters.append(st)
+        longest = max(longest, len(letters))
     return longest
 
 
